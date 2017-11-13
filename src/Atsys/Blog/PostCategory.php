@@ -9,11 +9,13 @@ class PostCategory extends Model
     protected $fillable = [
         'title',
         'alias',
+        'languages',
     ];
 
     protected $casts = [
         'title' => 'array',
         'alias' => 'array',
+        'languages' => 'array',
     ];
 
     public function posts()

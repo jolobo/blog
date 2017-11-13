@@ -40,11 +40,5 @@
             "role": "Designer"
         }
     ],
-    "minimum-stability": "dev",
-    "scripts": {
-        "post-package-install" : [
-            "mkdir public/images",
-            "mkdir public/images/blog_posts"
-        ]
-    }
+    "minimum-stability": "dev"
 }

@@ -19,6 +19,7 @@ class Post extends Model
         'meta_title',
         'image',
         'thumb',
+        'language',
     ];
 
     protected $casts = [
@@ -30,6 +31,7 @@ class Post extends Model
         'short_description' => 'array',
         'meta_description' => 'array',
         'meta_title' => 'array',
+        'language' => 'array',
     ];
 
     public function postCategories()

@@ -16,17 +16,20 @@ class CreatePostsTable extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('post_category_id')->unsigned()->nullable();
+            $table->integer('post_group_id')->unsigned();
             $table->boolean('published')->default(false);
-            $table->json('title');
-            $table->json('alias');
-            $table->json('subtitle');
-            $table->json('description');
-            $table->json('short_description');
-            $table->json('meta_description');
-            $table->json('meta_title');
+            $table->text('title');
+            $table->text('alias');
+            $table->text('subtitle');
+            $table->text('description');
+            $table->text('short_description');
+            $table->text('meta_description');
+            $table->text('meta_title');
+            $table->text('language');
             $table->timestamps();
 
             $table->foreign('post_category_id')->references('id')->on('post_categories')->onDelete('cascade');
+            $table->foreign('post_group_id')->references('id')->on('post_group')->onDelete('cascade');
         });
     }
 
