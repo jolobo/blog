@@ -10,6 +10,8 @@
     <meta property="og:image" content="{{ url($post->image) }}"/>
 @endsection
 
+
+
 @section('content')
     <div class="row">
         <div class="col-xs-12">
