@@ -34,7 +34,7 @@ class PostsController extends Controller
     {
 
         foreach (config('blog.languages') as $key => $language) {
-            $postinfo = array();
+
             $request->input('published');
             $post = Post::create($request->except(['image']));
 
