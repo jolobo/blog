@@ -15,14 +15,16 @@ class CreatePostCategoriesTable extends Migration
     {
         Schema::create('post_categories', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('post_categories_group_id')->unsigned();
+            //$table->integer('post_categories_group_id')->unsigned();
             $table->text('title');
             $table->text('alias');
             $table->text('language');
             $table->timestamps();
-
-            $table->foreign('post_categories_group_id')->references('id')->on('post_categories_group')->onDelete('cascade');
         });
+
+       /* Schema::table('post_categories', function (Blueprint $table) {
+            $table->foreign('post_categories_group_id')->references('id')->on('post_categories_group');
+        });*/
     }
 
     /**

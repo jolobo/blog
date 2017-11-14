@@ -41,37 +41,37 @@ class Post extends Model
 
     public function getTitleTranslatedAttribute()
     {
-        return $this->title[app()->getLocale()];
+        return $this->title;
     }
 
     public function getSubtitleTranslatedAttribute()
     {
-        return $this->subtitle[app()->getLocale()];
+        return $this->subtitle;
     }
 
     public function getAliasTranslatedAttribute()
     {
-        return $this->alias[app()->getLocale()];
+        return $this->alias;
     }
 
     public function getShortDescriptionTranslatedAttribute()
     {
-        return $this->short_description[app()->getLocale()];
+        return $this->short_description;
     }
 
     public function getDescriptionTranslatedAttribute()
     {
-        return $this->description[app()->getLocale()];
+        return $this->description;
     }
 
     public function getMetaTitleTranslatedAttribute()
     {
-        return $this->meta_title[app()->getLocale()];
+        return $this->meta_title;
     }
 
     public function getMetaDescriptionTranslatedAttribute()
     {
-        return $this->meta_description[app()->getLocale()];
+        return $this->meta_description;
     }
 
     public function getRouteAttribute()

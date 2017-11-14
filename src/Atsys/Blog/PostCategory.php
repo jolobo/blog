@@ -9,13 +9,13 @@ class PostCategory extends Model
     protected $fillable = [
         'title',
         'alias',
-        'languages',
+        'language',
     ];
 
     protected $casts = [
         'title' => 'array',
         'alias' => 'array',
-        'languages' => 'array',
+        'language' => 'array',
     ];
 
     public function posts()
@@ -25,12 +25,12 @@ class PostCategory extends Model
 
     public function getTitleTranslatedAttribute()
     {
-        return $this->title[app()->getLocale()];
+        return $this->title;
     }
 
     public function getAliasTranslatedAttribute()
     {
-        return $this->alias[app()->getLocale()];
+        return $this->alias;
     }
 
     public function getRouteAttribute()

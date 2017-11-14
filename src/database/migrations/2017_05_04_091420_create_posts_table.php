@@ -28,8 +28,11 @@ class CreatePostsTable extends Migration
             $table->text('language');
             $table->timestamps();
 
+        });
+
+        Schema::table('posts', function (Blueprint $table) {
+            $table->foreign('post_group_id')->references('id')->on('post_group');
             $table->foreign('post_category_id')->references('id')->on('post_categories')->onDelete('cascade');
-            $table->foreign('post_group_id')->references('id')->on('post_group')->onDelete('cascade');
         });
     }
 
