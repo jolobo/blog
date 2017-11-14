@@ -32,12 +32,17 @@ class PostsController extends Controller
 
     public function store(PostRequest $request)
     {
-        $post = Post::create($request->except(['image']));
 
-        $post->postCategories()->sync($request->get('post_categories'));
+        foreach (config('blog.languages') as $key => $language) {
+            $postinfo = array();
+            $request->input('published');
+            $post = Post::create($request->except(['image']));
 
-        if ($request->hasFile('image') && $request->file('image')->isValid()) {
-            $post->updateImage($request->file('image'));
+            $post->postCategories()->sync($request->get('post_categories'));
+
+            if ($request->hasFile('image') && $request->file('image')->isValid()) {
+                $post->updateImage($request->file('image'));
+            }
         }
 
         return redirect('admin/posts')->with('success', trans('blog::blog.post_created'));

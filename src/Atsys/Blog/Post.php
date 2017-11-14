@@ -39,6 +39,11 @@ class Post extends Model
         return $this->belongsToMany('Atsys\Blog\PostCategory');
     }
 
+    public function postGroups()
+    {
+        return $this->belongsTo('Atsys\Blog\PostGroup');
+    }
+
     public function getTitleTranslatedAttribute()
     {
         return $this->title;

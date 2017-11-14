@@ -11,6 +11,7 @@ class PostCategoriesController extends Controller
 {
     public function index(Request $request)
     {
+        dd($request);
         $query = PostCategory::query();
 
         if ($q = $request->get('q', '')) {
@@ -29,6 +30,7 @@ class PostCategoriesController extends Controller
 
     public function store(PostCategoryRequest $request)
     {
+        dd($request);
         PostCategory::create($request->all());
 
         return redirect('admin/post_categories')->with('success', trans('blog::blog.category_created'));
