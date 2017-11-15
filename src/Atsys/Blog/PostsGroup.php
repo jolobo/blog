@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Atsys\Blog;
 
 use Illuminate\Database\Eloquent\Model;
 

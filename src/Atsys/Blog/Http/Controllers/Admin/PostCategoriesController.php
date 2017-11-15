@@ -3,8 +3,8 @@
 namespace Atsys\Blog\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\PostCategoriesGroup;
 use Atsys\Blog\PostCategory;
+use Atsys\Blog\PostCategoriesGroup;
 use Atsys\Blog\Http\Requests\PostCategoryRequest;
 use Illuminate\Http\Request;
 
@@ -17,8 +17,8 @@ class PostCategoriesController extends Controller
         if ($q = $request->get('q', '')) {
             $query->where('id', 'like', "%$q%")->orWhere('title->' . app()->getLocale(), 'like', "%$q%");
         }
-
-        $categories = $query->get();
+        $categories = $query->get()->groupBy("post_categories_group_id");
+        //$categories = $query->get();
 
         return view('blog::admin.post_categories.index', compact('categories'));
     }
@@ -34,23 +34,40 @@ class PostCategoriesController extends Controller
         $post_categories_group->save();
 
         foreach (config('blog.languages') as $key => $language) {
-            $post_category = PostCategory::create($request->all());
 
-            $post_category->title = $post_category->title[$key];
-            $post_category->alias = $post_category->alias[$key];
+            $post_category = new PostCategory();
+
+
+            $post_category->title = $request->title[$key];
+            $post_category->alias = $request->alias[$key];
             $post_category->language = $key;
+
 
 
             $post_category->postCategoriesGroup()->associate($post_categories_group);
             $post_category->save();
 
-
         }
+
         return redirect('admin/post_categories')->with('success', trans('blog::blog.category_created'));
     }
 
     public function edit(PostCategory $post_category)
     {
+
+        $post_category->title = array($post_category->language =>$post_category->title);
+        $post_category->alias = array($post_category->language =>$post_category->alias);
+
+
+        $query = PostCategory::query();
+        $other_local_categories = $query->where("id", "<>", "$post_category->id")->where("post_categories_group_id", '=', "$post_category->post_categories_group_id")->get();
+
+        foreach ($other_local_categories as $category){
+
+            $post_category->title = $post_category->title + array($category->language => $category->title);
+            $post_category->alias = $post_category->alias + array($category->language => $category->alias);
+        }
+
         return view('blog::admin.post_categories.edit', compact('post_category'));
     }
 
