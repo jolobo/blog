@@ -14,9 +14,11 @@ class PostCategoriesController extends Controller
     {
         $query = PostCategory::query();
 
+        //TODO: check what is this for
         if ($q = $request->get('q', '')) {
             $query->where('id', 'like', "%$q%")->orWhere('title->' . app()->getLocale(), 'like', "%$q%");
         }
+        //****
         $categories = $query->get()->groupBy("post_categories_group_id");
         //$categories = $query->get();
 
@@ -30,6 +32,7 @@ class PostCategoriesController extends Controller
 
     public function store(PostCategoryRequest $request)
     {
+
         $post_categories_group = new PostCategoriesGroup();
         $post_categories_group->save();
 
@@ -37,12 +40,9 @@ class PostCategoriesController extends Controller
 
             $post_category = new PostCategory();
 
-
             $post_category->title = $request->title[$key];
             $post_category->alias = $request->alias[$key];
             $post_category->language = $key;
-
-
 
             $post_category->postCategoriesGroup()->associate($post_categories_group);
             $post_category->save();
@@ -55,9 +55,23 @@ class PostCategoriesController extends Controller
     public function edit(PostCategory $post_category)
     {
 
+        /*        $post_category->title = "{".$post_category->language ." => " . $post_category->title;
+                $post_category->alias = "{".$post_category->language ." => ". $post_category->alias;
+
+
+                $query = PostCategory::query();
+                $other_local_categories = $query->where("id", "<>", "$post_category->id")->where("post_categories_group_id", '=', "$post_category->post_categories_group_id")->get();
+
+                foreach ($other_local_categories as $category){
+
+                    $post_category->title = $post_category->title . " , " . "$category->language => $category->title";
+                    $post_category->alias = $post_category->alias . " , " . "$category->language => $category->alias";
+                }
+
+                $post_category->title = $post_category->title . " }";
+                $post_category->alias = $post_category->alias . " }";*/
         $post_category->title = array($post_category->language =>$post_category->title);
         $post_category->alias = array($post_category->language =>$post_category->alias);
-
 
         $query = PostCategory::query();
         $other_local_categories = $query->where("id", "<>", "$post_category->id")->where("post_categories_group_id", '=', "$post_category->post_categories_group_id")->get();
@@ -73,7 +87,24 @@ class PostCategoriesController extends Controller
 
     public function update(PostCategoryRequest $request, PostCategory $post_category)
     {
-        $post_category->update($request->all());
+
+        //dd($request->title[$post_category->language]);
+        //dd($post_category);
+
+        $post_category->title = $request->title[$post_category->language];
+        $post_category->alias = $request->alias[$post_category->language];
+        $post_category->save();
+
+        //$post_category->update($request->all());
+        $query = PostCategory::query();
+        $other_local_categories = $query->where("id", "<>", "$post_category->id")->where("post_categories_group_id", '=', "$post_category->post_categories_group_id")->get();
+        foreach ($other_local_categories as $category){
+
+            $category->title = $request->title[$category->language];
+            $category->alias = $request->alias[$category->language];
+            $category->save();
+        }
+
 
         return redirect('admin/post_categories')->with('success', trans('blog::blog.category_updated'));
     }

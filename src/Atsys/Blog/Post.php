@@ -24,14 +24,6 @@ class Post extends Model
 
     protected $casts = [
         'published' => 'boolean',
-        'title' => 'array',
-        'alias' => 'array',
-        'subtitle' => 'array',
-        'description' => 'array',
-        'short_description' => 'array',
-        'meta_description' => 'array',
-        'meta_title' => 'array',
-        'language' => 'array',
     ];
 
     public function postCategories()

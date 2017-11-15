@@ -33,12 +33,26 @@ class PostsController extends Controller
     public function store(PostRequest $request)
     {
 
+        $posts_group = new PostsGroup();
+        $posts_group->save();
+
         foreach (config('blog.languages') as $key => $language) {
 
-            $request->input('published');
-            $post = Post::create($request->except(['image']));
+            $post = new Post();
+
+            $post->published = $request->published;
+            $post->title = $request->title[$key];
+            $post->alias = $request->alias[$key];
+            $post->subtitle = $request->subtitle[$key];
+            $post->description =$request->description[$key];
+            $post->short_description =$request->short_description[$key];
+            $post->meta_description =$request->meta_description[$key];
+            $post->meta_title =$request->meta_title[$key];
+            $post->language = $key;
 
             $post->postCategories()->sync($request->get('post_categories'));
+            $post->postsGroup()->associate($posts_group);
+            $post->save();
 
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
                 $post->updateImage($request->file('image'));

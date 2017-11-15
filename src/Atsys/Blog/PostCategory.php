@@ -12,11 +12,6 @@ class PostCategory extends Model
         'language',
     ];
 
-    protected $casts = [
-        'title' => 'array',
-        'alias' => 'array',
-        'language' => 'array',
-    ];
 
     public function posts()
     {
