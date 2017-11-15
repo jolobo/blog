@@ -16,7 +16,7 @@ class CreatePostsTable extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('post_category_id')->unsigned()->nullable();
-            $table->integer('posts_group_id')->unsigned();
+            $table->integer('post_group_id')->unsigned();
             $table->boolean('published')->default(false);
             $table->text('title');
             $table->text('alias');
@@ -31,7 +31,7 @@ class CreatePostsTable extends Migration
         });
 
         Schema::table('posts', function (Blueprint $table) {
-            $table->foreign('posts_group_id')->references('id')->on('posts_groups');
+            $table->foreign('post_group_id')->references('id')->on('post_groups');
             $table->foreign('post_category_id')->references('id')->on('post_categories')->onDelete('cascade');
         });
     }

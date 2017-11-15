@@ -40,7 +40,12 @@
                 </thead>
 
                 <tbody>
-                    @foreach ($posts as $post)
+                @foreach ($posts as $key => $post_group)
+                    @php
+
+                        //TODO: Choose the right language not just the first
+                            $post = $post_group[0];
+                    @endphp
                         <tr>
                             <td>
                                 <a href="{{ url("admin/posts/$post->id/edit") }}">{{ $post->title_translated }}</a>

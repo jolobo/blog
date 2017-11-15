@@ -31,7 +31,7 @@ class Post extends Model
         return $this->belongsToMany('Atsys\Blog\PostCategory');
     }
 
-    public function postGroups()
+    public function postGroup()
     {
         return $this->belongsTo('Atsys\Blog\PostGroup');
     }

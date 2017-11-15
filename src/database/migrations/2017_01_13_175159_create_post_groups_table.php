@@ -13,7 +13,7 @@ class CreatePostsGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::create('posts_groups', function (Blueprint $table) {
+        Schema::create('post_groups', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
         });
@@ -26,6 +26,6 @@ class CreatePostsGroupsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('posts_groups');
+        Schema::dropIfExists('post_groups');
     }
 }

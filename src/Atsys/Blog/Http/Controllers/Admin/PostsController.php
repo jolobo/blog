@@ -5,7 +5,8 @@ namespace Atsys\Blog\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Atsys\Blog\Post;
 use Atsys\Blog\PostCategory;
-use Atsys\Blog\PostsGroup;
+use Atsys\Blog\PostGroup;
+use Illuminate\Support\Facades\DB;
 use Atsys\Blog\Http\Requests\PostRequest;
 use Illuminate\Http\Request;
 
@@ -18,8 +19,8 @@ class PostsController extends Controller
         if ($q = $request->get('q', '')) {
             $query->where('id', 'like', "%$q%")->orWhere('title->' . app()->getLocale(), 'like', "%$q%");
         }
-
-        $posts = $query->get();
+        $posts = $query->get()->groupBy("post_group_id");
+        //$posts = $query->get();
 
         return view('blog::admin.posts.index', compact('posts'));
     }
@@ -34,8 +35,9 @@ class PostsController extends Controller
     public function store(PostRequest $request)
     {
 
-        $posts_group = new PostsGroup();
-        $posts_group->save();
+        $post_group = new PostGroup();
+
+        $post_group->save();
 
         foreach (config('blog.languages') as $key => $language) {
 
@@ -51,9 +53,19 @@ class PostsController extends Controller
             $post->meta_title =$request->meta_title[$key];
             $post->language = $key;
 
-            $post->postCategories()->sync($request->get('post_categories'));
-            $post->postsGroup()->associate($posts_group);
-            $post->save();
+            $query = PostCategory::query();
+            $post_categories = array();
+            foreach ($request->post_categories as $key => $post_category_id){
+                $post_categories[] = $query->where("id", "=", "$post_category_id")->get();
+            }
+            $post->postGroup()->associate($post_group);
+
+            DB::transaction(function () use ($post, $request, $post_categories) {
+                $post->save();
+                $post->postCategories()->sync($request->get('post_categories'));
+
+            });
+
 
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
                 $post->updateImage($request->file('image'));

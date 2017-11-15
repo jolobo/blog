@@ -4,7 +4,7 @@ namespace Atsys\Blog;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PostsGroup extends Model
+class PostGroup extends Model
 {
     //Gets the Categories associated
     public function postCategories()
