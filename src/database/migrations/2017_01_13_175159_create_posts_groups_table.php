@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePostGroupsTable extends Migration
+class CreatePostsGroupsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreatePostGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::create('post_groups', function (Blueprint $table) {
+        Schema::create('posts_groups', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
         });
@@ -26,6 +26,6 @@ class CreatePostGroupsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('post_groups');
+        Schema::dropIfExists('posts_groups');
     }
 }

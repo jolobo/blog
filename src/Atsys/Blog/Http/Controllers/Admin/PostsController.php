@@ -5,6 +5,7 @@ namespace Atsys\Blog\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Atsys\Blog\Post;
 use Atsys\Blog\PostCategory;
+use Atsys\Blog\PostsGroup;
 use Atsys\Blog\Http\Requests\PostRequest;
 use Illuminate\Http\Request;
 
