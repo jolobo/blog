@@ -9,6 +9,7 @@ use Atsys\Blog\PostGroup;
 use Illuminate\Support\Facades\DB;
 use Atsys\Blog\Http\Requests\PostRequest;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class PostsController extends Controller
 {
@@ -39,6 +40,13 @@ class PostsController extends Controller
 
         $post_group->save();
 
+        $image = null;
+        $thumb = null;
+
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $this->createImage($request->file('image'), $image, $thumb);
+        }
+
         foreach (config('blog.languages') as $key => $language) {
 
             $post = new Post();
@@ -60,16 +68,13 @@ class PostsController extends Controller
             }
             $post->postGroup()->associate($post_group);
 
+            $post->updateImage($image, $thumb);
+
             DB::transaction(function () use ($post, $request, $post_categories) {
-                $post->save();
+                //$post->save();
                 $post->postCategories()->sync($request->get('post_categories'));
-
+                $post->save();
             });
-
-
-            if ($request->hasFile('image') && $request->file('image')->isValid()) {
-                $post->updateImage($request->file('image'));
-            }
         }
 
         return redirect('admin/posts')->with('success', trans('blog::blog.post_created'));
@@ -104,6 +109,34 @@ class PostsController extends Controller
         $post->delete();
 
         return redirect('admin/posts')->with('success', trans('blog::blog.post_deleted'));
+    }
+
+    public function createImage($file, &$image, &$thumb)
+    {
+        $image = 'images/blog_posts/' . str_random(15) . '.' . $file->getClientOriginalExtension();
+        $path = public_path($image);
+
+        Image::make($file->path())->resize(800, null, function ($constraint) {
+            $constraint->aspectRatio();
+        })->save($path, 70);
+
+        $thumb = 'images/blog_posts/' . str_random(15) . '.' . $file->getClientOriginalExtension();
+        $path = public_path($thumb);
+
+        Image::make($file->path())->fit(64, 64)->save($path, 70);
+
+    }
+
+    /**
+     * Delete the image file if exists.
+     *
+     * @return void
+     */
+    private function deleteImageFile()
+    {
+        if ($this->image && File::exists(public_path($this->image))) {
+            File::delete(public_path($this->image));
+        }
     }
 
 }

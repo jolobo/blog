@@ -9,7 +9,9 @@ class CategoryPostsController extends Controller
 {
     public function index($category_slug)
     {
-        $category = PostCategory::where('alias->' . app()->getLocale(), $category_slug)->first();
+        $category = PostCategory::where('alias', '=', $category_slug)->where('language','=',app()->getLocale())->first(); //where('alias->' . app()->getLocale(), $category_slug)->first();
+
+        // dd($category);
 
         if (!$category) {
             abort(404);

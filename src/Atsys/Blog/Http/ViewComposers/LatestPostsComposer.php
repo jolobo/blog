@@ -33,7 +33,8 @@ class LatestPostsComposer
      */
     public function compose(View $view)
     {
-        $latest_posts = $this->post->latest()->take(5)->get();
+
+        $latest_posts = $this->post->where('language', '=', app()->getLocale() )->latest()->take(5)->get();
 
         $view->with('latest_posts', $latest_posts);
     }
