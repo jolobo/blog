@@ -86,18 +86,61 @@ class PostsController extends Controller
 
     public function edit(Post $post)
     {
-        $categories = PostCategory::get()->pluck('title_translated', 'id');
+        $categories = PostCategory::where('language','=',app()->getLocale() )->get()->pluck('title_translated', 'id');
+
+        $post->title = array($post->language =>$post->title);
+        $post->alias = array($post->language =>$post->alias);
+        $post->subtitle = array($post->language =>$post->subtitle);
+        $post->description = array($post->language =>$post->description);
+        $post->short_description = array($post->language =>$post->short_description);
+        $post->meta_description = array($post->language =>$post->meta_description);
+        $post->meta_title = array($post->language =>$post->meta_title);
+
+
+        $query = Post::query();
+        $other_local_posts = $query->where("id", "<>", "$post->id")->where("post_group_id", '=', "$post->post_group_id")->get();
+
+        foreach ($other_local_posts as $local_post){
+
+            $post->title += array($local_post->language => $local_post->title);
+            $post->alias += array($local_post->language => $local_post->alias);
+            $post->subtitle += array($local_post->language => $local_post->subtitle);
+            $post->description += array($local_post->language => $local_post->description);
+            $post->short_description += array($local_post->language => $local_post->short_description);
+            $post->meta_description += array($local_post->language => $local_post->meta_description);
+            $post->meta_title += array($local_post->language => $local_post->meta_title);
+        }
 
         return view('blog::admin.posts.edit', compact('post', 'categories'));
     }
 
     public function update(PostRequest $request, Post $post)
     {
-        $post->update($request->except(['image']));
-        $post->postCategories()->sync($request->get('post_categories'));
+        $image = null;
+        $thumb = null;
 
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
-            $post->updateImage($request->file('image'));
+            $this->createImage($request->file('image'), $image, $thumb);
+        }
+
+        $query = Post::query();
+        $local_posts = $query->where("id", "<>", "$post->id")->where("post_group_id", '=', "$post->post_group_id")->get();
+        $local_posts->prepend($post);
+
+
+        foreach ($local_posts as $local_post){
+            $local_post->title = $request->title[$local_post->language];
+            $local_post->alias = $request->alias[$local_post->language];
+            $local_post->subtitle = $request->subtitle[$local_post->language];
+            $local_post->description = $request->description[$local_post->language];
+            $local_post->short_description = $request->short_description[$local_post->language];
+            $local_post->meta_description = $request->meta_description[$local_post->language];
+            $local_post->meta_title = $request->meta_title[$local_post->language];
+            $local_post->postCategories()->sync($request->get('post_categories'));
+
+            $local_post->updateImage($image, $thumb);
+
+            $local_post->save();
         }
 
         return redirect('admin/posts')->with('success', trans('blog::blog.post_updated'));

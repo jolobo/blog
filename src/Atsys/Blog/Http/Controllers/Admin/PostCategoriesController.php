@@ -78,8 +78,8 @@ class PostCategoriesController extends Controller
 
         foreach ($other_local_categories as $category){
 
-            $post_category->title = $post_category->title + array($category->language => $category->title);
-            $post_category->alias = $post_category->alias + array($category->language => $category->alias);
+            $post_category->title += array($category->language => $category->title);
+            $post_category->alias += array($category->language => $category->alias);
         }
 
         return view('blog::admin.post_categories.edit', compact('post_category'));
