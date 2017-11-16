@@ -28,8 +28,7 @@ class PostsController extends Controller
 
     public function create()
     {
-        $categories = PostCategory::get()->pluck('title_translated', 'id');
-
+        $categories = PostCategory::where('language','=',app()->getLocale() )->get()->pluck('title_translated', 'id');
         return view('blog::admin.posts.create', compact('categories'));
     }
 
