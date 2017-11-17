@@ -3,6 +3,7 @@
 namespace Atsys\Blog;
 
 use Illuminate\Database\Eloquent\Model;
+use App\User;
 
 class PostGroup extends Model
 {
@@ -10,5 +11,9 @@ class PostGroup extends Model
     public function posts()
     {
         return $this->hasMany('Atsys\Blog\Post');
+    }
+
+    public function user(){
+        return $this->belongTo('User');
     }
 }
