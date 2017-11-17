@@ -4,6 +4,7 @@ namespace Atsys\Blog\Http\ViewComposers;
 
 use Atsys\Blog\Post;
 use Illuminate\View\View;
+use Atsys\Blog\PostGroup;
 
 class LatestPostsComposer
 {
