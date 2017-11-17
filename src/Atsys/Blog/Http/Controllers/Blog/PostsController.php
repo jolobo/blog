@@ -21,15 +21,16 @@ class PostsController extends Controller
     {
         $post = Post::where('alias', '=', $post_slug)->first();
 
+        if (!$post) {
+            abort(404);
+        }
+
         $locale = app()->getLocale();
 
         if($post->language != $locale){
 
             $post = Post::where('post_group_id','=',$post->post_group_id)->where('language','=',$locale)->get()->first();
-        }
-
-        if (!$post) {
-            abort(404);
+            return redirect()->action('\Atsys\Blog\Http\Controllers\Blog\PostsController@show', ['category_alias'=>$category_slug, 'post_alias'=> $post->alias]);
         }
 
         return view('blog::frontend.posts.show', compact('post'));
