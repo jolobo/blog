@@ -148,7 +148,14 @@ class PostsController extends Controller
 
     public function destroy(Post $post)
     {
-        $post->delete();
+        $post_group = $post->postGroup()->first();
+
+        $posts = $post_group->posts()->get();
+
+        foreach($posts as $post) {
+            $post->delete();
+        }
+        $post_group->delete();
 
         return redirect('admin/posts')->with('success', trans('blog::blog.post_deleted'));
     }

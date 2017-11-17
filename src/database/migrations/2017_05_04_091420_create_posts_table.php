@@ -26,8 +26,6 @@ class CreatePostsTable extends Migration
             $table->text('meta_description');
             $table->text('meta_title');
             $table->text('language');
-            $table->timestamps();
-
         });
 
         Schema::table('posts', function (Blueprint $table) {

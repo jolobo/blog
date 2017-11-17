@@ -66,7 +66,7 @@
                                         </li>
 
                                         <li>
-                                            <a href="{{ url("admin/posts/$post->id") }}" class="send-form" data-method="delete" data-confirm="@lang('blog::blog.sure_to_delete_post')">
+                                            <a href="{{ url(app()->getLocale()."/admin/posts/$post->id") }}" class="send-form" data-method="delete" data-confirm="@lang('blog::blog.sure_to_delete_post')">
                                                 <i class="fa fa-fw fa-trash"></i> @lang('blog::blog.delete')
                                             </a>
                                         </li>

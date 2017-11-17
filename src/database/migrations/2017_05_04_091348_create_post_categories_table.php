@@ -19,7 +19,6 @@ class CreatePostCategoriesTable extends Migration
             $table->text('title');
             $table->text('alias');
             $table->text('language');
-            $table->timestamps();
         });
 
         Schema::table('post_categories', function (Blueprint $table) {

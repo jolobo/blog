@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\File;
 
 class Post extends Model
 {
+
+    public $timestamps = false;
+
     protected $fillable = [
         'published',
         'title',
