@@ -33,8 +33,14 @@ class LatestPostsComposer
      */
     public function compose(View $view)
     {
+        $post_groups = PostGroup::latest()->take(5)->get();
 
-        $latest_posts = $this->post->where('language', '=', app()->getLocale() )->latest()->take(5)->get();
+        $latest_posts = array();
+        foreach($post_groups as $post_group) {
+
+            $latest_posts[] = $post_group->posts()->where('language', '=', app()->getLocale())->get()->first();
+
+        }
 
         $view->with('latest_posts', $latest_posts);
     }

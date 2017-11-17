@@ -2,23 +2,31 @@
 
 namespace Atsys\Blog\Http\Controllers\Blog;
 
+use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
 use Atsys\Blog\Post;
-use Atsys\Blog\PostCategory;
+use \Illuminate\Database\Eloquent\Collection;
 
 class PostsController extends Controller
 {
     public function index()
     {
 
-        $posts = Post::with('postCategories')->latest()->paginate(config('blog.pagination'));
-        dd($posts);
+        App::abort(404);
+
+        /*
+        $posts = Post::with("post_categories")->join('post_groups', function($join) {
+                $join->on('posts.post_group_id', '=', 'post_groups.id')
+                    ->where('posts.language', '=', app()->getLocale());
+            })->latest()->paginate(config('blog.pagination'));
 
         return view('blog::frontend.posts.index', compact('posts'));
+        */
     }
 
     public function show($category_slug, $post_slug)
     {
+
         $post = Post::where('alias', '=', $post_slug)->first();
 
         if (!$post) {
