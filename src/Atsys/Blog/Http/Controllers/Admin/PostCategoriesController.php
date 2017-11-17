@@ -111,7 +111,14 @@ class PostCategoriesController extends Controller
 
     public function destroy(PostCategory $post_category)
     {
-        $post_category->delete();
+        $post_categories_group = $post_category->postCategoriesGroup()->first();
+
+        $post_categories = $post_categories_group->postCategories()->get();
+
+        foreach($post_categories as $post_category) {
+            $post_category->delete();
+        }
+        $post_categories_group->delete();
 
         return redirect('admin/post_categories')->with('success', trans('blog::blog.category_deleted'));
     }
