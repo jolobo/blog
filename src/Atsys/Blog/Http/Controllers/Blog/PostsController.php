@@ -4,6 +4,7 @@ namespace Atsys\Blog\Http\Controllers\Blog;
 
 use App\Http\Controllers\Controller;
 use Atsys\Blog\Post;
+use Atsys\Blog\PostCategory;
 
 class PostsController extends Controller
 {
@@ -19,6 +20,13 @@ class PostsController extends Controller
     public function show($category_slug, $post_slug)
     {
         $post = Post::where('alias', '=', $post_slug)->first();
+
+        $locale = app()->getLocale();
+
+        if($post->language != $locale){
+
+            $post = Post::where('post_group_id','=',$post->post_group_id)->where('language','=',$locale)->get()->first();
+        }
 
         if (!$post) {
             abort(404);
