@@ -50,7 +50,7 @@ class CreatePostPostCategoryTable extends Migration
     public function down()
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->integer('post_category_id')->unsigned()->nullable()->after('id');
+            $table->integer('post_category_id')->unsigned()->after('id');
             $table->foreign('post_category_id')->references('id')->on('post_categories')->onDelete('cascade');
         });
 

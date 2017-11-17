@@ -22,7 +22,7 @@ class CreatePostCategoriesTable extends Migration
         });
 
         Schema::table('post_categories', function (Blueprint $table) {
-            $table->foreign('post_categories_group_id')->references('id')->on('post_categories_groups');
+            $table->foreign('post_categories_group_id')->references('id')->on('post_categories_groups')->onDelete('cascade');
         });
     }
 
