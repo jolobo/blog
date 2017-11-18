@@ -29,13 +29,32 @@ class PostRequest extends FormRequest
             'post_categories.*' => 'exists:post_categories,id',
             'published' => 'required|boolean',
             'image' => 'file|image',
-            'title.*' => "required",
+            'title.*' => "required|max:255",
             'subtitle.*' => "required",
-            'alias.*' => "required",
+            'alias.*' => "required|unique:posts,alias|max:255",
             'meta_title.*' => "required",
             'meta_description.*' => "required",
             'short_description.*' => "required",
             'description.*' => "required",
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+
+            $alias_array = $this->alias;
+            foreach (config('blog.languages') as $key => $language) {
+
+                $alias = $alias_array[$key];
+                array_shift($alias_array);
+
+                if( in_array($alias, $alias_array) ) {
+                    // TODO: locate the error
+                    $validator->errors()->add('alias', 'The alias of a post must be different between languages!' ) ;
+                    return;
+                }
+            }
+        });
     }
 }

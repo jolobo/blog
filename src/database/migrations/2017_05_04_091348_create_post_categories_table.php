@@ -16,9 +16,9 @@ class CreatePostCategoriesTable extends Migration
         Schema::create('post_categories', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('post_categories_group_id')->unsigned();
-            $table->text('title');
-            $table->text('alias');
-            $table->text('language');
+            $table->string('title');
+            $table->string('alias')->unique();
+            $table->string('language');
         });
 
         Schema::table('post_categories', function (Blueprint $table) {

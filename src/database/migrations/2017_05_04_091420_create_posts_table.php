@@ -18,14 +18,14 @@ class CreatePostsTable extends Migration
             $table->integer('post_category_id')->unsigned();
             $table->integer('post_group_id')->unsigned();
             $table->boolean('published')->default(false);
-            $table->text('title');
-            $table->text('alias');
+            $table->string('title');
+            $table->string('alias')->unique();
             $table->text('subtitle');
             $table->text('description');
             $table->text('short_description');
             $table->text('meta_description');
             $table->text('meta_title');
-            $table->text('language');
+            $table->string('language');
         });
 
         Schema::table('posts', function (Blueprint $table) {

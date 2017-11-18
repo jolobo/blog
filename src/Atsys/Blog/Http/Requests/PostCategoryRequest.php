@@ -24,8 +24,33 @@ class PostCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'title.*' => 'required',
-            'alias.*' => 'required',
+            'title.*' => 'required|max:255',
+            'alias.*' => 'required|unique:post_categories,alias|max:255',
         ];
+    }
+
+    /**
+     * Configure the validator instance.
+     *
+     * @param  \Illuminate\Validation\Validator  $validator
+     * @return void
+     */
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+
+            $alias_array = $this->alias;
+            foreach (config('blog.languages') as $key => $language) {
+
+                $alias = $alias_array[$key];
+                array_shift($alias_array);
+
+                if( in_array($alias, $alias_array) ) {
+                    // TODO: locate the error
+                    $validator->errors()->add('alias', 'The alias of a post must be different between languages!' ) ;
+                    return;
+                }
+            }
+        });
     }
 }
