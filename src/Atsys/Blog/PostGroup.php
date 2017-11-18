@@ -7,6 +7,7 @@ use App\User;
 
 class PostGroup extends Model
 {
+
     //Gets the posts associated
     public function posts()
     {
@@ -14,6 +15,6 @@ class PostGroup extends Model
     }
 
     public function user(){
-        return $this->belongTo('User');
+        return $this->belongsTo('App\User','user_id');
     }
 }

@@ -37,6 +37,8 @@ class PostsController extends Controller
 
         $post_group = new PostGroup();
 
+        $post_group->user_id = Auth::id();
+
         $post_group->save();
 
         $image = null;

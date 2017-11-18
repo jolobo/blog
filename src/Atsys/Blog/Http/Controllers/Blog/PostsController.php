@@ -28,6 +28,9 @@ class PostsController extends Controller
     {
 
         $post = Post::where('alias', '=', $post_slug)->first();
+        $post_group = $post->postGroup()->first();
+        $user = $post_group->user()->first();
+        $user_name = $user->name ." ". $user->surnames;
 
         if (!$post) {
             abort(404);
@@ -41,6 +44,6 @@ class PostsController extends Controller
             return redirect()->action('\Atsys\Blog\Http\Controllers\Blog\PostsController@show', ['category_alias'=>$category_slug, 'post_alias'=> $post->alias]);
         }
 
-        return view('blog::frontend.posts.show', compact('post'));
+        return view('blog::frontend.posts.show', compact('post', 'user_name' ));
     }
 }
