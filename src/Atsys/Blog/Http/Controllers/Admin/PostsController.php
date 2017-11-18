@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Atsys\Blog\Post;
 use Atsys\Blog\PostCategory;
 use Atsys\Blog\PostGroup;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Atsys\Blog\Http\Requests\PostRequest;
 use Illuminate\Http\Request;

@@ -20,7 +20,6 @@ class PostCategoriesController extends Controller
         }
         //****
         $categories = $query->get()->groupBy("post_categories_group_id");
-        //$categories = $query->get();
 
         return view('blog::admin.post_categories.index', compact('categories'));
     }
@@ -55,21 +54,7 @@ class PostCategoriesController extends Controller
     public function edit(PostCategory $post_category)
     {
 
-        /*        $post_category->title = "{".$post_category->language ." => " . $post_category->title;
-                $post_category->alias = "{".$post_category->language ." => ". $post_category->alias;
 
-
-                $query = PostCategory::query();
-                $other_local_categories = $query->where("id", "<>", "$post_category->id")->where("post_categories_group_id", '=', "$post_category->post_categories_group_id")->get();
-
-                foreach ($other_local_categories as $category){
-
-                    $post_category->title = $post_category->title . " , " . "$category->language => $category->title";
-                    $post_category->alias = $post_category->alias . " , " . "$category->language => $category->alias";
-                }
-
-                $post_category->title = $post_category->title . " }";
-                $post_category->alias = $post_category->alias . " }";*/
         $post_category->title = array($post_category->language =>$post_category->title);
         $post_category->alias = array($post_category->language =>$post_category->alias);
 
