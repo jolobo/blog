@@ -24,7 +24,7 @@ class PostsController extends Controller
         */
     }
 
-    public function show($category_slug, $post_slug)
+    public function show($post_slug)
     {
 
         $post = Post::where('alias', '=', $post_slug)->first();
@@ -41,7 +41,7 @@ class PostsController extends Controller
         if($post->language != $locale){
 
             $post = Post::where('post_group_id','=',$post->post_group_id)->where('language','=',$locale)->get()->first();
-            return redirect()->action('\Atsys\Blog\Http\Controllers\Blog\PostsController@show', ['category_alias'=>$category_slug, 'post_alias'=> $post->alias]);
+            return redirect()->action('\Atsys\Blog\Http\Controllers\Blog\PostsController@show', ['post_alias'=> $post->alias]);
         }
 
         return view('blog::frontend.posts.show', compact('post', 'user_name' ));

@@ -3,8 +3,6 @@
 namespace Atsys\Blog;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\File;
-
 
 class Post extends Model
 {
@@ -28,13 +26,6 @@ class Post extends Model
     protected $casts = [
         'published' => 'boolean',
     ];
-
-    /*
-    public function postCategories()
-    {
-        return $this->belongsToMany('Atsys\Blog\PostCategory');
-    }
-    */
 
     public function postGroup()
     {
@@ -78,14 +69,7 @@ class Post extends Model
 
     public function getRouteAttribute()
     {
-        return $this->postCategories->first()->route . '/' . $this->alias_translated;
+        return "blog/".$this->alias_translated;
     }
 
-
-    public function updateImage($image, $thumb)
-    {
-        $this->image = "/$image";
-        $this->thumb = "/$thumb";
-        $this->save();
-    }
 }

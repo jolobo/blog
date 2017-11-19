@@ -9,19 +9,19 @@ use Atsys\Blog\PostGroup;
 use Illuminate\Support\Facades\Auth;
 use Atsys\Blog\Http\Requests\PostRequest;
 use Illuminate\Http\Request;
-use Intervention\Image\Facades\Image;
 
 class PostsController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Post::query()->with('postCategories');
+
+        $query = Post::query()->where('language','=',app()->getLocale() );
 
         if ($q = $request->get('q', '')) {
             $query->where('id', 'like', "%$q%")->orWhere('title->' . app()->getLocale(), 'like', "%$q%");
         }
+
         $posts = $query->get()->groupBy("post_group_id");
-        //$posts = $query->get();
 
         return view('blog::admin.posts.index', compact('posts'));
     }
@@ -41,17 +41,14 @@ class PostsController extends Controller
 
         $post_category = PostCategory::where("id", "=", current($request->post_categories))->get()->first();
 
-        $post_categories_group = $post_category->postCategoryGroup()->first();
-
-        $post_group->postCategoryGroups()->attach($post_categories_group);
+        $post_category_group = $post_category->postCategoryGroup()->first();
 
         $post_group->save();
 
-        $image = null;
-        $thumb = null;
+        $post_group->postCategoryGroups()->attach($post_category_group);
 
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
-            $this->createImage($request->file('image'), $image, $thumb);
+            $post_group->updateImage($request->file('image'));
         }
 
         foreach (config('blog.languages') as $key => $language) {
@@ -69,8 +66,6 @@ class PostsController extends Controller
             $post->language = $key;
 
             $post->postGroup()->associate($post_group);
-
-            $post->updateImage($image, $thumb);
 
             $post->save();
 
@@ -116,12 +111,7 @@ class PostsController extends Controller
 
     public function update(PostRequest $request, Post $post)
     {
-        $image = null;
-        $thumb = null;
 
-        if ($request->hasFile('image') && $request->file('image')->isValid()) {
-            $this->createImage($request->file('image'), $image, $thumb);
-        }
 
         $query = Post::query();
         $local_posts = $query->where("id", "<>", "$post->id")->where("post_group_id", '=', "$post->post_group_id")->get();
@@ -129,6 +119,10 @@ class PostsController extends Controller
 
         $post_group = $post->postGroup();
         dd($post_group);  //TODO: Check this
+
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $post_group->updateImage($request->file('image'));
+        }
 
         $post_category = PostCategory::where("id", "=", current($request->post_categories)->get()->first());
         $post_categories_group = $post_category->postCategoriesGroup();
@@ -143,8 +137,6 @@ class PostsController extends Controller
             $local_post->short_description = $request->short_description[$local_post->language];
             $local_post->meta_description = $request->meta_description[$local_post->language];
             $local_post->meta_title = $request->meta_title[$local_post->language];
-
-            $local_post->updateImage($image, $thumb);
 
             $local_post->save();
         }
@@ -164,34 +156,6 @@ class PostsController extends Controller
         $post_group->delete();
 
         return redirect('admin/posts')->with('success', trans('blog::blog.post_deleted'));
-    }
-
-    public function createImage($file, &$image, &$thumb)
-    {
-        $image = 'images/blog_posts/' . str_random(15) . '.' . $file->getClientOriginalExtension();
-        $path = public_path($image);
-
-        Image::make($file->path())->resize(800, null, function ($constraint) {
-            $constraint->aspectRatio();
-        })->save($path, 70);
-
-        $thumb = 'images/blog_posts/' . str_random(15) . '.' . $file->getClientOriginalExtension();
-        $path = public_path($thumb);
-
-        Image::make($file->path())->fit(64, 64)->save($path, 70);
-
-    }
-
-    /**
-     * Delete the image file if exists.
-     *
-     * @return void
-     */
-    private function deleteImageFile()
-    {
-        if ($this->image && File::exists(public_path($this->image))) {
-            File::delete(public_path($this->image));
-        }
     }
 
 }

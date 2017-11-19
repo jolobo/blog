@@ -16,6 +16,8 @@ class CreatePostGroupsTable extends Migration
         Schema::create('post_groups', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
+            $table->string('image')->default('');
+            $table->string('thumb')->default('');
            //$table->integer('post_categories_groups_id')->unsigned();
             $table->timestamps();
         });

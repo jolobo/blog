@@ -15,9 +15,11 @@ class PostCategoriesController extends Controller
         $query = PostCategory::query();
 
         //TODO: check what is this for
+        /*
         if ($q = $request->get('q', '')) {
             $query->where('id', 'like', "%$q%")->orWhere('title->' . app()->getLocale(), 'like', "%$q%");
         }
+        */
         //****
         $categories = $query->get()->groupBy("post_categories_group_id");
 

@@ -1,9 +1,7 @@
 @if ($latest_posts)
     <div class="latest-posts">
-        <hr>
         <div class="articles">
             @foreach ($latest_posts as $post)
-
                 <article class="post-article">
                     <a href="{{ url(app()->getLocale() .'/'. $post->route) }}">
                         <div>
@@ -25,4 +23,3 @@
         </div>
     </div>
 @endif
-

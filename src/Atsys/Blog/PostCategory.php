@@ -15,12 +15,6 @@ class PostCategory extends Model
         'language',
     ];
 
-/*
-    public function posts()
-    {
-        return $this->belongsToMany('Atsys\Blog\Post');
-    }
-*/
     public function postCategoryGroup()
     {
         return $this->belongsTo('Atsys\Blog\PostCategoryGroup');

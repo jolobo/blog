@@ -2,8 +2,8 @@
 
 Route::group(['prefix' => 'blog'], function () {
    // Route::get('/', 'Atsys\Blog\Http\Controllers\Blog\PostsController@index');
-    Route::get('{category_alias}', 'Atsys\Blog\Http\Controllers\Blog\CategoryPostsController@index');
-    Route::get('{category_alias}/{post_alias}', 'Atsys\Blog\Http\Controllers\Blog\PostsController@show');
+    //Route::get('{category_alias}', 'Atsys\Blog\Http\Controllers\Blog\CategoryPostsController@index');
+    Route::get('{post_alias}', 'Atsys\Blog\Http\Controllers\Blog\PostsController@show');
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => ['web', 'auth']], function () {
