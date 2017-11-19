@@ -25,17 +25,10 @@
         @foreach (config('blog.languages') as $key => $language)
             <div role="tabpanel" class="tab-pane{{ $loop->first ? ' active' : '' }}" id="{{ $key }}">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-group">
                             {!! Form::label("title[$key]", trans('blog::blog.title')) !!}
                             {!! Form::text("title[$key]", null, ['class' => 'form-control', 'required']) !!}
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            {!! Form::label("alias[$key]", trans('blog::blog.alias')) !!}
-                            {!! Form::text("alias[$key]", null, ['class' => 'form-control', 'required']) !!}
                         </div>
                     </div>
                 </div>

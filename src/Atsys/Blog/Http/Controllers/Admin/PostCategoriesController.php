@@ -43,7 +43,6 @@ class PostCategoriesController extends Controller
             $post_category = new PostCategory();
 
             $post_category->title = $request->title[$key];
-            $post_category->alias = $request->alias[$key];
             $post_category->language = $key;
 
             $post_category->postCategoryGroup()->associate($post_category_group);

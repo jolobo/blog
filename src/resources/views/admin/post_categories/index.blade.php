@@ -33,7 +33,6 @@
                 <thead>
                 <tr>
                     <th>@lang('blog::blog.title')</th>
-                    <th>@lang('blog::blog.alias')</th>
                     <th style="width:55px;"></th>
                 </tr>
                 </thead>
@@ -45,7 +44,6 @@
                         <td>
                             <a href="{{ url("admin/post_categories/$category->id/edit") }}">{{ $category->title }}</a>
                         </td>
-                       {{--<td>{{ $category->alias_translated }}</td>--}}
                         <td>
                             <div class="btn-group" role="group">
                                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
