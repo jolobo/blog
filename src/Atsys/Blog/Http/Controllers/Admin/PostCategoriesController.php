@@ -4,7 +4,7 @@ namespace Atsys\Blog\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Atsys\Blog\PostCategory;
-use Atsys\Blog\PostCategoriesGroup;
+use Atsys\Blog\PostCategoryGroup;
 use Atsys\Blog\Http\Requests\PostCategoryRequest;
 use Illuminate\Http\Request;
 
@@ -32,7 +32,7 @@ class PostCategoriesController extends Controller
     public function store(PostCategoryRequest $request)
     {
 
-        $post_categories_group = new PostCategoriesGroup();
+        $post_categories_group = new PostCategoryGroup();
         $post_categories_group->save();
 
         foreach (config('blog.languages') as $key => $language) {

@@ -4,11 +4,9 @@ namespace Atsys\Blog\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Atsys\Blog\Post;
-use Atsys\Blog\PostCategoriesGroup;
 use Atsys\Blog\PostCategory;
 use Atsys\Blog\PostGroup;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Atsys\Blog\Http\Requests\PostRequest;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
@@ -43,9 +41,9 @@ class PostsController extends Controller
 
         $post_category = PostCategory::where("id", "=", current($request->post_categories))->get()->first();
 
-        $post_categories_group = $post_category->postCategoriesGroup()->first();
+        $post_categories_group = $post_category->postCategoryGroup()->first();
 
-        $post_group->postCategoriesGroups()->attach($post_categories_group);
+        $post_group->postCategoryGroups()->attach($post_categories_group);
 
         $post_group->save();
 

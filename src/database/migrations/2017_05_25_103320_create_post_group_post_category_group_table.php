@@ -19,7 +19,7 @@ class CreatePostGroupPostCategoryGroupTable extends Migration
             $table->integer('post_group_id')->unsigned();
 
             $table->foreign('post_category_group_id')
-                  ->references('id')->on('post_categories_groups')
+                  ->references('id')->on('post_category_groups')
                   ->onDelete('cascade');
 
             $table->foreign('post_group_id')

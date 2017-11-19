@@ -18,7 +18,7 @@ class PostGroup extends Model
         return $this->belongsTo('App\User','user_id');
     }
 
-    public function postCategoriesGroups(){
-        return $this->belongsToMany('Atsys\Blog\PostCategoriesGroup', 'post_group_post_category_group','post_category_group_id');
+    public function postCategoryGroups(){
+        return $this->belongsToMany('Atsys\Blog\PostCategoryGroup', 'post_group_post_category_group','post_category_group_id');
     }
 }
