@@ -39,38 +39,35 @@
                 </thead>
 
                 <tbody>
-                @foreach ($categories->first() as $key => $category)
 
-                    @if( $category->language == app()->getLocale() )
+                @foreach ($categories as $key => $category)
+                    <tr>
+                        <td>
+                            <a href="{{ url("admin/post_categories/$category->id/edit") }}">{{ $category->title }}</a>
+                        </td>
+                        <td>{{ $category->alias_translated }}</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <span class="caret"></span>
+                                </button>
 
-                        <tr>
-                            <td>
-                                <a href="{{ url("admin/post_categories/$category->id/edit") }}">{{ $category->title }}</a>
-                            </td>
-                            <td>{{ $category->alias_translated }}</td>
-                            <td>
-                                <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="caret"></span>
-                                    </button>
+                                <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                    <li>
+                                        <a href="{{ url("admin/post_categories/$category->id/edit") }}">
+                                            <i class="fa fa-fw fa-edit"></i> @lang('blog::blog.edit')
+                                        </a>
+                                    </li>
 
-                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                                        <li>
-                                            <a href="{{ url("admin/post_categories/$category->id/edit") }}">
-                                                <i class="fa fa-fw fa-edit"></i> @lang('blog::blog.edit')
-                                            </a>
-                                        </li>
-
-                                        <li>
-                                            <a href="{{ url("admin/post_categories/$category->id") }}" class="send-form" data-method="delete" data-confirm="@lang('blog::blog.sure_to_delete_category')">
-                                                <i class="fa fa-fw fa-trash"></i> @lang('blog::blog.delete')
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                    @endif
+                                    <li>
+                                        <a href="{{ url("admin/post_categories/$category->id") }}" class="send-form" data-method="delete" data-confirm="@lang('blog::blog.sure_to_delete_category')">
+                                            <i class="fa fa-fw fa-trash"></i> @lang('blog::blog.delete')
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
                 @endforeach
                 </tbody>
             </table>

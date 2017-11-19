@@ -5,8 +5,8 @@
                 <article class="post-article">
                     <a href="{{ url(app()->getLocale() .'/'. $post->route) }}">
                         <div>
-                            @if ($post->image)
-                                <div class="post_img_container"  style="background: url({{ $post->image }}) center center no-repeat; background-size: cover;">
+                            @if ($post->postGroup->image)
+                                <div class="post_img_container"  style="background: url({{ $post->postGroup->image }}) center center no-repeat; background-size: cover;">
                                     <div class="post-info">
                                         <h2>
                                             {{ $post->title_translated }}

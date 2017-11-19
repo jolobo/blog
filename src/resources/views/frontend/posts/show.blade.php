@@ -12,7 +12,7 @@
     <meta property="og:title" content="{{ $post->meta_title_translated }}" />
     <meta property="og:description" content="{{ $post->meta_description_translated }}" />
     <meta property="og:url" content="{{ request()->url() }}" />
-    <meta property="og:image" content="{{ url($post->image) }}"/>
+    <meta property="og:image" content="{{ url($post->postGroup->image) }}"/>
     @include("landing.links");
 </head>
 
@@ -23,7 +23,7 @@
 <div class="main_part ">
 
     <div id="intro" class="clearfix">
-        <div class="item" style="background: url({{ $post->image }}) center center no-repeat; background-size: cover;">
+        <div class="item" style="background: url({{ $post->postGroup->image }}) center center no-repeat; background-size: cover;">
             <div class="container">
                 <div class="row">
                     <h1 data-animate="fadeInDown">{{ $post->title_translated }}</h1>

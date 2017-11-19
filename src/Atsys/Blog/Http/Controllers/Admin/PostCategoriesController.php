@@ -21,7 +21,8 @@ class PostCategoriesController extends Controller
         }
         */
         //****
-        $categories = $query->get()->groupBy("post_categories_group_id");
+
+        $categories = $query->where("language", "=", app()->getLocale() )->get();
 
         return view('blog::admin.post_categories.index', compact('categories'));
     }
