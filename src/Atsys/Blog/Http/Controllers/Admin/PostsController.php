@@ -41,11 +41,11 @@ class PostsController extends Controller
 
         $post_group->user_id = Auth::id();
 
-        $post_category = PostCategory::where("id", "=", current($request->post_categories)->get()->first());
+        $post_category = PostCategory::where("id", "=", current($request->post_categories))->get()->first();
 
         $post_categories_group = $post_category->postCategoriesGroup()->first();
 
-        $post_group->postCategoriesGroups()->associate($post_categories_group);
+        $post_group->postCategoriesGroups()->attach($post_categories_group);
 
         $post_group->save();
 
