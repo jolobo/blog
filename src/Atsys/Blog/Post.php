@@ -29,10 +29,12 @@ class Post extends Model
         'published' => 'boolean',
     ];
 
+    /*
     public function postCategories()
     {
         return $this->belongsToMany('Atsys\Blog\PostCategory');
     }
+    */
 
     public function postGroup()
     {

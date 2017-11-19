@@ -4,6 +4,7 @@ namespace Atsys\Blog\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Atsys\Blog\Post;
+use Atsys\Blog\PostCategoriesGroup;
 use Atsys\Blog\PostCategory;
 use Atsys\Blog\PostGroup;
 use Illuminate\Support\Facades\Auth;
@@ -40,6 +41,12 @@ class PostsController extends Controller
 
         $post_group->user_id = Auth::id();
 
+        $post_category = PostCategory::where("id", "=", current($request->post_categories)->get()->first());
+
+        $post_categories_group = $post_category->postCategoriesGroup()->first();
+
+        $post_group->postCategoriesGroups()->associate($post_categories_group);
+
         $post_group->save();
 
         $image = null;
@@ -63,20 +70,12 @@ class PostsController extends Controller
             $post->meta_title =$request->meta_title[$key];
             $post->language = $key;
 
-            $query = PostCategory::query();
-            $post_categories = array();
-            foreach ($request->post_categories as $key => $post_category_id){
-                $post_categories[] = $query->where("id", "=", "$post_category_id")->get();
-            }
             $post->postGroup()->associate($post_group);
 
             $post->updateImage($image, $thumb);
 
-            DB::transaction(function () use ($post, $request, $post_categories) {
-                //$post->save();
-                $post->postCategories()->sync($request->get('post_categories'));
-                $post->save();
-            });
+            $post->save();
+
         }
 
         return redirect('admin/posts')->with('success', trans('blog::blog.post_created'));
@@ -130,6 +129,13 @@ class PostsController extends Controller
         $local_posts = $query->where("id", "<>", "$post->id")->where("post_group_id", '=', "$post->post_group_id")->get();
         $local_posts->prepend($post);
 
+        $post_group = $post->postGroup();
+        dd($post_group);  //TODO: Check this
+
+        $post_category = PostCategory::where("id", "=", current($request->post_categories)->get()->first());
+        $post_categories_group = $post_category->postCategoriesGroup();
+        $post_group->postCategoriesGroups()->sync($post_categories_group);
+        $post_group->save();
 
         foreach ($local_posts as $local_post){
             $local_post->title = $request->title[$local_post->language];
@@ -139,7 +145,6 @@ class PostsController extends Controller
             $local_post->short_description = $request->short_description[$local_post->language];
             $local_post->meta_description = $request->meta_description[$local_post->language];
             $local_post->meta_title = $request->meta_title[$local_post->language];
-            $local_post->postCategories()->sync($request->get('post_categories'));
 
             $local_post->updateImage($image, $thumb);
 

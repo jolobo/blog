@@ -11,4 +11,8 @@ class PostCategoriesGroup extends Model
     {
         return $this->hasMany('Atsys\Blog\PostCategory');
     }
+
+    public function postGroups(){
+        return $this->belongsToMany('Atsys\Blog\PostGroup');
+    }
 }

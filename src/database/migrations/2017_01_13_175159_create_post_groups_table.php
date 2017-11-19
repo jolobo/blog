@@ -16,12 +16,14 @@ class CreatePostGroupsTable extends Migration
         Schema::create('post_groups', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
+            $table->integer('post_categories_groups_id')->unsigned();
             $table->timestamps();
         });
 
         Schema::table('post_groups',function (Blueprint $table)
         {
             $table->foreign('user_id')->references('id')->on('users');
+            $table->integer('post_categories_groups_id')->references('id')->on('post_categories_groups');
         });
     }
 
