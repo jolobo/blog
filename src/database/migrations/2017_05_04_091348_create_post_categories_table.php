@@ -17,7 +17,7 @@ class CreatePostCategoriesTable extends Migration
             $table->increments('id');
             $table->integer('post_category_group_id')->unsigned();
             $table->string('title');
-            $table->string('alias')->unique();
+           //$table->string('alias')->unique();
             $table->string('language');
         });
 

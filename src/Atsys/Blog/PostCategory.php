@@ -11,7 +11,7 @@ class PostCategory extends Model
 
     protected $fillable = [
         'title',
-        'alias',
+        //'alias',
         'language',
     ];
 
@@ -24,14 +24,15 @@ class PostCategory extends Model
     {
         return $this->title;
     }
-
+/*
     public function getAliasTranslatedAttribute()
     {
         return $this->alias;
     }
-
-    public function getRouteAttribute()
+  public function getRouteAttribute()
     {
         return "blog/{$this->alias_translated}";
     }
+*/
+
 }

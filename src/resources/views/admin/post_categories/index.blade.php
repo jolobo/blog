@@ -45,7 +45,7 @@
                         <td>
                             <a href="{{ url("admin/post_categories/$category->id/edit") }}">{{ $category->title }}</a>
                         </td>
-                        <td>{{ $category->alias_translated }}</td>
+                       {{--<td>{{ $category->alias_translated }}</td>--}}
                         <td>
                             <div class="btn-group" role="group">
                                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
