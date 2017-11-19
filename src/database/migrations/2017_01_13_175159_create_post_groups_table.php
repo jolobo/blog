@@ -23,7 +23,7 @@ class CreatePostGroupsTable extends Migration
         Schema::table('post_groups',function (Blueprint $table)
         {
             $table->foreign('user_id')->references('id')->on('users');
-            $table->integer('post_categories_groups_id')->references('id')->on('post_categories_groups');
+            $table->foreign('post_categories_groups_id')->references('id')->on('post_categories_groups');
         });
     }
 
