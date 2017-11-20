@@ -9,6 +9,8 @@ use Atsys\Blog\PostGroup;
 use Illuminate\Support\Facades\Auth;
 use Atsys\Blog\Http\Requests\PostRequest;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Validator;
 
 class PostsController extends Controller
 {
@@ -34,6 +36,12 @@ class PostsController extends Controller
 
     public function store(PostRequest $request)
     {
+        foreach ($request->alias as $key => $alias){
+
+            Validator::make(['alias'=>$alias], [
+                'alias' => 'unique:posts,alias'
+            ])->validate();
+        }
 
         $post_group = new PostGroup();
 
@@ -112,6 +120,22 @@ class PostsController extends Controller
     public function update(PostRequest $request, Post $post)
     {
 
+
+        foreach ($request->alias as $key => $alias){
+
+            $validator = Validator::make(['alias'=>$alias], [
+                'alias' => Rule::unique('posts','alias')->where(function ($query) use($post) {
+                    return $query->where('post_group_id', '<>', $post->post_group_id);
+                })
+            ]);
+
+            if($validator->fails()){
+                $validator->errors()->add('alias', 'The alias in '. config('blog.languages')[$key].' is already taken!');
+                return redirect()->back()
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+        }
 
         $query = Post::query();
         $local_posts = $query->where("id", "<>", "$post->id")->where("post_group_id", '=', "$post->post_group_id")->get();
