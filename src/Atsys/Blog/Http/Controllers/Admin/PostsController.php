@@ -142,7 +142,6 @@ class PostsController extends Controller
         $local_posts->prepend($post);
 
         $post_group = $post->postGroup();
-        dd($post_group);  //TODO: Check this
 
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
             $post_group->updateImage($request->file('image'));
