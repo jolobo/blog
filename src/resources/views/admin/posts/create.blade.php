@@ -10,7 +10,7 @@
                     <i class="fa fa fa-arrow-left"></i> @lang('blog::blog.blog_posts')
                 </a>
             </h1>
-            {{$method = 'post'}}
+            @php $method = 'post' @endphp
             {!! Form::open(['url' => url('/'.app()->getLocale().'/admin/posts'), 'method' => $method, 'files' => true]) !!}
             @include('blog::admin.posts.form')
             {!! Form::close() !!}

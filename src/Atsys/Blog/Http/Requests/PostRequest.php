@@ -31,7 +31,7 @@ class PostRequest extends FormRequest
             'image' => 'file|image',
             'title.*' => "required|max:255",
             'subtitle.*' => "required",
-            'alias.*' => "required|unique:posts,alias|max:255",
+            'alias.*' => "required|max:255",
             'meta_title.*' => "required",
             'meta_description.*' => "required",
             'short_description.*' => "required",
