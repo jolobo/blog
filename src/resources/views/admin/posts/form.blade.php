@@ -27,12 +27,19 @@
         </div>
     </div>
 
+
     <div class="col-md-4">
         <div class="form-group">
             {!! Form::label('image', trans('blog::blog.image')) !!}
-            {!! Form::file('image') !!}
+            @if($method =="post")
+                {!! Form::file('image',['required']) !!}
+            @else
+                {!! Form::label('already_image', trans('blog::blog.already_image')) !!}
+                {!! Form::file('image') !!}
+            @endif
         </div>
     </div>
+
 </div>
 
 <hr>

@@ -10,8 +10,8 @@
                     <i class="fa fa fa-arrow-left"></i> @lang('blog::blog.blog_posts')
                 </a>
             </h1>
-
-            {!! Form::model($post, ['url' => url('/'.app()->getLocale()."/admin/posts/$post->id"), 'method' => 'patch', 'files' => true]) !!}
+            {{$method = 'patch'}}
+            {!! Form::model($post, ['url' => url('/'.app()->getLocale()."/admin/posts/$post->id"), 'method' => $method, 'files' => true]) !!}
             @include('blog::admin.posts.form')
             {!! Form::close() !!}
         </div>

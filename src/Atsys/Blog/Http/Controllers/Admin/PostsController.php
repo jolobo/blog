@@ -120,7 +120,6 @@ class PostsController extends Controller
     public function update(PostRequest $request, Post $post)
     {
 
-
         foreach ($request->alias as $key => $alias){
 
             $validator = Validator::make(['alias'=>$alias], [
@@ -137,20 +136,21 @@ class PostsController extends Controller
             }
         }
 
-        $query = Post::query();
-        $local_posts = $query->where("id", "<>", "$post->id")->where("post_group_id", '=', "$post->post_group_id")->get();
-        $local_posts->prepend($post);
-
-        $post_group = $post->postGroup();
+        $post_group = $post->postGroup()->get()->first();
 
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
             $post_group->updateImage($request->file('image'));
         }
 
-        $post_category = PostCategory::where("id", "=", current($request->post_categories)->get()->first());
-        $post_categories_group = $post_category->postCategoriesGroup();
-        $post_group->postCategoriesGroups()->sync($post_categories_group);
+        $post_category = PostCategory::where("id", "=", current($request->post_categories))->get()->first();
+
+        $post_category_group = $post_category->postCategoryGroup()->first();
+        $post_group->postCategoryGroups()->sync($post_category_group);
         $post_group->save();
+
+        $query = Post::query();
+        $local_posts = $query->where("id", "<>", "$post->id")->where("post_group_id", '=', "$post->post_group_id")->get();
+        $local_posts->prepend($post);
 
         foreach ($local_posts as $local_post){
             $local_post->title = $request->title[$local_post->language];

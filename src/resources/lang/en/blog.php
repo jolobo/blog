@@ -37,4 +37,5 @@ return [
     'sure_to_delete_category' => 'Are you sure to delete this category?',
     'sure_to_delete_post' => 'Are you sure to delete this post?',
     'title' => 'Title',
+    'already_image' => 'This Post has already an image. If you wish you can upload a new one',
 ];

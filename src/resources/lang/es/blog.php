@@ -37,4 +37,5 @@ return [
     'sure_to_delete_category' => '¿Está seguro de eliminar esta categoría?',
     'sure_to_delete_post' => '¿Está seguro de eliminar este post?',
     'title' => 'Título',
+    'already_image' => 'Este Post ya tiene una imagen asociada. Si lo desea puede subir una nueva',
 ];
