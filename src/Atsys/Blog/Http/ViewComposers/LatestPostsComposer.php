@@ -34,13 +34,12 @@ class LatestPostsComposer
      */
     public function compose(View $view)
     {
-        $nPosts = $view->getData()['nPosts'];
-
-
+       
         if( array_key_exists('post', $view->getData())  == false) {
             $post_groups = PostGroup::latest()->get();
         }
         else{
+            $nPosts = array_key_exists('nPosts', $view->getData() ) ? $view->getData()['nPosts'] : 5;  // 5 as default nPosts
             $current_post_group_id = $view->getData()['post']->post_group_id;
             $post_groups = PostGroup::where("id","<>",$current_post_group_id )->latest()->take(intval($nPosts))->get();
         }
