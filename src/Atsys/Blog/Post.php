@@ -32,6 +32,21 @@ class Post extends Model
         return $this->belongsTo('Atsys\Blog\PostGroup');
     }
 
+    //Gets all categories associated to that post. A post should have only categories with the same language as itself
+    public function postCategories()
+    {
+
+        $postCategoryGroups = $this->postgroup->postCategoryGroups()->get();
+
+        $postCategories = new Collection();
+        foreach ($postCategoryGroups as $key => $postCategoryGroup){
+
+            $postCategories = $postCategories->concat($postCategoryGroup->postCategories->where("language", "=", $this->language));
+        }
+
+        return $postCategories;
+    }
+
     public function getTitleTranslatedAttribute()
     {
         return $this->title;
